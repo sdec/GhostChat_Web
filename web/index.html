@@ -1,0 +1,221 @@
+<!--
+
+Ghost Chat
+Heel de applicatie draait op deze index.html pagina
+Views worden afgewisseld met jQuery, te herkennen aan
+id="view-...".
+
+-->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ghost Chat - Anonymous chatting application for HTML5 & Android</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=480, initial-scale=1">  
+        <link rel="icon" type="image/ico" href="img/favico.ico" />
+        <link type="text/css" rel="stylesheet" href="css/libs/bootstrap.min.css" />
+        <link type="text/css" rel="stylesheet" href="css/ghostchat.css" />
+    </head>
+    <body>
+
+        <!-- Popup om informatie te tonen -->
+        <div class="popup"></div>
+        
+        <div class="wrapper">
+
+            <!-- Laad scherm -->
+            <div class="view" id="view-loading">
+                <div class="view-menu"></div>
+                <div class="view-content">
+                    <div class="title">
+                        <img src="img/banner.png" />
+                    </div>
+                    <h2>Loading ...</h2>
+                    <br />
+                    <br />
+                    <img class="img-loading" src="img/loading.gif" />
+                </div>
+            </div>
+
+            <!-- Start scherm -->
+            <div class="view" id="view-start">
+                <div class="view-menu">
+                    <div class="view-title"></div>
+                </div>
+                <div class="view-content">
+                    <div class="title">
+                        <img src="img/banner.png" />
+                    </div>
+                    <h2>Anonymous chatting</h2>
+                    <div id="view-start-menu">
+                        <div class="button button-start"><img src="img/start.png" /><span>Start</span></div>
+                        <div class="button button-settings"><img src="img/settings.png" /><span>Settings</span></div>
+                        <div class="button button-about"><img src="img/about.png" /><span>About</span></div>
+                    </div>
+                    <div id="view-stats">
+                        <strong><span id="users-online">0</span></strong> users online<br />
+                        <strong><span id="chats-created">0</span></strong> chats created
+                    </div>
+                </div>
+            </div>
+
+            <!-- About scherm -->
+            <div class="view" id="view-about">
+                <div class="view-menu">
+                    <div class="view-button"><img src="img/back.png" /></div>
+                    <div class="view-title">About</div>
+                </div>
+                <div class="view-content">
+                    <br />
+                    <br />
+                    <div class="button about">
+                        <p>Ghost Chat combines free and anonymous chatting with an offline gaming experience in a simple yet chatty interface.</p><br />
+                        <p>You can use Ghost Chat to chat anonymously with random people, either in group or alone.</p><br />
+                        <p>While suffering from a loss of connection, Ghost Chat offers you a range of small but utterly fun games!</p><br />
+                        <p><img src="img/favico.ico" /></p>
+                        <p>Ghost Chat 2013<br />&copy; Jeff Horemans & Sander Decoster</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings scherm -->
+            <div class="view" id="view-settings">
+                <div class="view-menu">
+                    <div class="view-button"><img src="img/back.png" /></div>
+                    <div class="view-title">Settings</div>
+                </div>
+                <div class="view-content">
+                    
+                    <!-- Toon de locatie? ja/nee -->
+                    <div class="setting">
+                        <img src="img/gps.png" /> Show location 
+                        <span class="button blue" id="toggle-location">On</span>
+                    </div>
+                    
+                    <!-- Maak chats "listed"? ja/nee -->
+                    <div class="setting">
+                        <img src="img/list.png" /> List chats (<a id="listchats">?</a>)
+                        <span class="button blue" id="toggle-listed">Off</span>
+                    </div>
+                    
+                    <!-- Voorbeeld van de locatie in de vorm van een google map image -->
+                    <div id="settings-location-preview"></div>
+                    
+                </div>
+            </div>
+
+            <!-- Group chat selectie scherm -->
+            <div class="view" id="view-select-group">
+                <div class="view-menu">
+                    <div class="view-button"><img src="img/back.png" /></div>
+                </div>
+                <div class="view-content">
+                    <table>
+                        <tr class="button">
+                            <td class="select-prev"><img src="img/previous.png" /></td>
+                            <td>Group chat</td>
+                            <td class="select-next"><img src="img/next.png" /></td>
+                        </tr>
+                        <tr class="button">
+                            <td colspan="3">
+                                <input type="text" maxlength="24" class="input-username" placeholder="Username ..." autocomplete="off" /><br />
+                                <br />
+                                <input type="text" maxlength="16" class="input-chatname" placeholder="Chat name ..." autocomplete="off" />
+                            </td>
+                        </tr>
+                        <tr class="button">
+                            <td colspan="3">
+                                <div class="div-validation">
+                                    <img class="img-loading" src="img/loading.gif" />
+                                    <div id="link-group-create" class="button blue">Create this chat</div>
+                                    <div id="link-group-join" class="button blue">Join this chat</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                    <br />
+                    <p class="button blue" id="show-listed"><img src="img/list.png" />Show listed chats</p>
+                </div>
+            </div>
+
+            <!-- One on One selectie scherm -->
+            <div class="view" id="view-select-ono">
+                <div class="view-menu">
+                    <div class="view-button"><img src="img/back.png" /></div>
+                </div>
+                <div class="view-content">
+                    <table>
+                        <tr class="button">
+                            <td class="select-prev"><img src="img/previous.png" /></td>
+                            <td>1 on 1</td>
+                            <td class="select-next"><img src="img/next.png" /></td>
+                        </tr>
+                        <tr class="button">
+                            <td colspan="3">
+                                <input type="text" maxlength="24" class="input-username" placeholder="Username ..." autocomplete="off" /><br />
+                            </td>
+                        </tr>
+                        <tr class="button">
+                            <td colspan="3">
+                                <div class="div-validation">
+                                    <img class="img-loading" src="img/loading.gif" />
+                                    <div id="link-ono-join" class="button blue">Talk to a stranger</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+            <!-- Chat scherm -->
+            <div class="view" id="view-chat-group">
+                <div class="view-menu">
+                    <div class="view-button"><img src="img/back.png" /></div>
+                    <div class="view-title"></div>
+                </div>
+                <div class="view-content">
+                    <div id="chat-messages-group"></div>
+                    <div class="chat-controls">
+                        <input type="text" maxlength="64" id="chat-group-message" placeholder="Tap to enter message" />
+                        <button type="submit" class="chat-send"><img src="img/send.png" /></button>
+                    </div>
+                    <div class="chat-stats">
+                        <img src="img/users.png" /> <span id="chat-online-users">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Online gebruikers scherm -->
+            <div class="view" id="view-chat-users">
+                <div class="view-menu">
+                    <div class="view-button"><img src="img/back.png" /></div>
+                    <div class="view-title"></div>
+                </div>
+                <div class="view-content" id="chat-users">
+                    <p>There are no users online at the moment.</p>
+                </div>
+            </div>
+            
+            <!-- Aangemaakte chats scherm -->
+            <div class="view" id="view-show-listed">
+                <div class="view-menu">
+                    <div class="view-button"><img src="img/back.png" /></div>
+                    <div class="view-title">Listed chats</div>
+                </div>
+                <div class="view-content" id="listed-chats">
+                    <p>There were no chats created yet.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <script type="text/javascript" src="js/libs/jquery.min.js"></script>
+        <script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/countries.js"></script>
+        <script type="text/javascript" src="js/ghostchat.js"></script>
+
+    </body>
+</html>
